@@ -2,18 +2,32 @@
  * L'Empire du Sous-Sol - Logique d'authentification connectée à Supabase
  */
 
-// 1. Initialisation du client Supabase
-// Remplacer ces chaînes par vos identifiants uniques disponibles sur votre dashboard Supabase
+// 1. On déclare la variable globale VIDE au démarrage
+let supabase = null;
+
+// Les clés restent accessibles globalement
 const SUPABASE_URL = "https://bxgczdbsgqxykxycmwsn.supabase.co"; 
 const SUPABASE_ANON_KEY = "sb_publishable_MVfDOGWaMmpSVT7_POsSEw_Q9qmeDCR";
 
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
+// 2. On attend que TOUT le HTML et les scripts (CDN Supabase) soient prêts
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("[SYSTEM] Logique de L'Empire du Sous-Sol connectée à Supabase.");
-    
-    // Optionnel : Vérifier si un utilisateur est déjà connecté à l'ouverture de la page
-    checkCurrentUser();
+    console.log("[SYSTEM] Fenêtre prête. Initialisation des modules...");
+
+    try {
+        // 3. On initialise Supabase SEULEMENT maintenant que la bibliothèque est chargée
+        if (window.supabase) {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            console.log("[SYSTEM] Connexion établie avec le serveur Supabase.");
+            
+            // 4. On lance les vérifications de session
+            switchTab('login');
+            checkCurrentUser();
+        } else {
+            console.error("[CRITICAL] La bibliothèque Supabase n'a pas pu être récupérée du CDN.");
+        }
+    } catch (error) {
+        console.error("[INIT ERROR] Échec de l'initialisation :", error.message);
+    }
 });
 
 /**
