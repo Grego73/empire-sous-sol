@@ -4,8 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>L'Empire du Sous-Sol - Jeu de Gestion Minière</title>
-    <!-- Appel du style CSS externe -->
+    
+    <!-- 1. Le style s'affiche tout de suite -->
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- 2. On force le chargement immédiat de Supabase en tâche de fond -->
+    <script src="https://jsdelivr.net"></script>
 </head>
 <body>
 
@@ -86,9 +90,6 @@
 
     </div>
 </div>
-
-<!-- Inclusion du SDK Supabase officiel via CDN -->
-<script src="https://jsdelivr.net"></script>
 
 <!-- Liaison avec votre logique JavaScript externe -->
 <script src="js/script.js"></script>
