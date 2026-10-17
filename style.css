@@ -1,0 +1,204 @@
+:root {
+    --bg-main: #0c0d12;
+    --bg-card: #161822;
+    --border-color: #2b2f41;
+    --text-main: #f3f4f6;
+    --text-muted: #9ca3af;
+    --accent-color: #e67e22; /* Orange industriel */
+    --success-color: #10b981;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.landing-container {
+    width: 100%;
+    max-width: 950px;
+    margin: 20px;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 40px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+@media (max-width: 768px) {
+    .landing-container {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+}
+
+/* Section Description du jeu */
+.game-desc {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.game-desc h1 {
+    font-size: 32px;
+    margin: 0 0 10px 0;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.game-desc h1 span {
+    color: var(--accent-color);
+}
+
+.game-desc p {
+    color: var(--text-muted);
+    line-height: 1.6;
+    font-size: 15px;
+}
+
+.features-list {
+    margin-top: 20px;
+    padding: 0;
+    list-style: none;
+}
+
+.features-list li {
+    margin-bottom: 12px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.features-list li::before {
+    content: "⛏️";
+    margin-right: 10px;
+}
+
+/* Section Formulaires / Authentification */
+.auth-box {
+    border-left: 1px solid var(--border-color);
+    padding-left: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .auth-box {
+        border-left: none;
+        padding-left: 0;
+        padding-top: 20px;
+        border-top: 1px solid var(--border-color);
+    }
+}
+
+.auth-tabs {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 5px 0;
+    position: relative;
+}
+
+.tab-btn.active {
+    color: var(--text-main);
+}
+
+.tab-btn.active::after {
+    content: "";
+    position: absolute;
+    bottom: -11px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--accent-color);
+}
+
+.form-panel {
+    display: none;
+}
+
+.form-panel.active {
+    display: block;
+}
+
+.form-group {
+    margin-bottom: 18px;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+}
+
+input {
+    background-color: #090a0e;
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.2s;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+.btn-submit {
+    background-color: var(--accent-color);
+    color: #000;
+    border: none;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    transition: background-color 0.2s;
+}
+
+.btn-submit:hover {
+    background-color: #d35400;
+    color: #fff;
+}
+
+.link-forgot {
+    font-size: 13px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 15px;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.link-forgot:hover {
+    color: var(--accent-color);
+}
