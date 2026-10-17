@@ -3,8 +3,8 @@
  */
 
 // 1. Initialisation du client Supabase (doit correspondre à vos identifiants)
-const SUPABASE_URL = "VOTRE_URL_SUPABASE"; 
-const SUPABASE_ANON_KEY = "VOTRE_CLE_ANON_PUBLIQUE";
+const SUPABASE_URL = "https://bxgczdbsgqxykxycmwsn.supabase.co/rest/v1/"; 
+const SUPABASE_ANON_KEY = "sb_publishable_MVfDOGWaMmpSVT7_POsSEw_Q9qmeDCR";
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // 2. Exécution automatique de la vérification de sécurité au chargement
