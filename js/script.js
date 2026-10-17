@@ -2,33 +2,19 @@
  * L'Empire du Sous-Sol - Logique d'authentification connectée à Supabase
  */
 
-// 1. On déclare la variable globale VIDE au démarrage
-let supabase = null;
-
 // Les clés restent accessibles globalement
 const SUPABASE_URL = "https://bxgczdbsgqxykxycmwsn.supabase.co"; 
 const SUPABASE_ANON_KEY = "sb_publishable_MVfDOGWaMmpSVT7_POsSEw_Q9qmeDCR";
 
-// 2. Initialisation au chargement de la page
-document.addEventListener("DOMContentLoaded", async () => {
-    console.log("[SYSTEM] Initialisation des modules...");
+// On utilise directement la bibliothèque locale qui est déjà prête
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    try {
-        if (window.supabase) {
-            // Initialisation de l'instance
-            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-            console.log("[SYSTEM] Connexion établie avec le serveur Supabase.");
-            
-            // Une fois initialisé, on gère l'affichage et la session
-            switchTab('login');
-            await checkCurrentUser();
-        } else {
-            console.error("[CRITICAL] La bibliothèque Supabase n'a pas pu être récupérée du CDN.");
-        }
-    } catch (error) {
-        console.error("[INIT ERROR] Échec de l'initialisation :", error.message);
-    }
+document.addEventListener("DOMContentLoaded", async () => {
+    console.log("[SYSTEM] Logique connectée à Supabase en local.");
+    switchTab('login');
+    await checkCurrentUser();
 });
+
 
 /**
  * Gère le basculement entre les différents onglets de formulaires
