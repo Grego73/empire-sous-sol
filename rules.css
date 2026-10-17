@@ -1,0 +1,126 @@
+/* L'Empire du Sous-Sol - Design de la Documentation */
+:root {
+    --bg-main: #0c0d12;
+    --bg-card: #161822;
+    --border-color: #2b2f41;
+    --text-main: #f3f4f6;
+    --text-muted: #9ca3af;
+    --accent-color: #e67e22;
+    --success-color: #10b981;
+    --danger-color: #ef4444;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    line-height: 1.6;
+    margin: 0;
+    padding: 40px 20px;
+}
+
+.rules-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+h1 {
+    font-size: 28px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 15px;
+    margin-top: 0;
+}
+
+h1 span {
+    color: var(--accent-color);
+}
+
+h2 {
+    font-size: 18px;
+    color: var(--accent-color);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 30px;
+    border-left: 3px solid var(--accent-color);
+    padding-left: 10px;
+}
+
+p {
+    color: var(--text-muted);
+    font-size: 15px;
+}
+
+/* Liste à puces stylisée */
+ul {
+    padding-left: 20px;
+}
+
+li {
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+strong {
+    color: var(--text-main);
+}
+
+/* Tableaux comparatifs des règles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 14px;
+}
+
+th {
+    background-color: #090a0e;
+    color: var(--text-main);
+    text-align: left;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+}
+
+td {
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+}
+
+/* Encadrés d'avertissement ou astuces */
+.alert-box {
+    background-color: rgba(239, 68, 68, 0.1);
+    border-left: 4px solid var(--danger-color);
+    padding: 15px;
+    border-radius: 4px;
+    margin: 20px 0;
+}
+
+.alert-box p {
+    margin: 0;
+    color: var(--text-main);
+    font-size: 14px;
+}
+
+.btn-nav {
+    display: inline-block;
+    background-color: var(--border-color);
+    color: var(--text-main);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background-color 0.2s;
+    margin-top: 20px;
+}
+
+.btn-nav:hover {
+    background-color: var(--accent-color);
+    color: #000;
+}
