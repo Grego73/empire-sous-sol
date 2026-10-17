@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L'Empire du Sous-Sol - Jeu de Gestion Minière</title>
+    <!-- Appel du fichier CSS externe -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="landing-container">
+    
+    <!-- GAUCHE : DESCRIPTION DU JEU -->
+    <div class="game-desc">
+        <h1>L'Empire <span>du Sous-Sol</span></h1>
+        <p>Prenez les rênes d'une compagnie minière et bâtissez un empire financier à l'échelle mondiale. Dans cette simulation axée sur la pure stratégie économique, chaque décision compte.</p>
+        
+        <ul class="features-list">
+            <li><strong>Prospection stratégique :</strong> Achetez ou louez des gisements de gravier, de charbon ou d'or.</li>
+            <li><strong>Marché de l'occasion :</strong> Économisez vos capitaux en investissant dans du matériel usagé reconditionné.</li>
+            <li><strong>Calcul en temps réel :</strong> Vos infrastructures continuent de produire de la richesse, même lorsque vous êtes hors-ligne.</li>
+            <li><strong>Gestion de contrats :</strong> Honorez les demandes des industries locales pour maximiser vos profits.</li>
+        </ul>
+    </div>
+
+    <!-- DROITE : AUTHENTIFICATION -->
+    <div class="auth-box">
+        <div class="auth-tabs" id="authTabs">
+            <button class="tab-btn active" onclick="switchTab('login')">Connexion</button>
+            <button class="tab-btn" onclick="switchTab('register')">Inscription</button>
+        </div>
+
+        <!-- FORMULAIRE CONNEXION -->
+        <div id="panel-login" class="form-panel active">
+            <form onsubmit="handleSubmit(event, 'connexion')">
+                <div class="form-group">
+                    <label>Adresse Email</label>
+                    <input type="email" required placeholder="nom@entreprise.com">
+                </div>
+                <div class="form-group">
+                    <label>Mot de passe</label>
+                    <input type="password" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn-submit">Ouvrir la session</button>
+            </form>
+            <div class="link-forgot" onclick="switchTab('forgot')">Mot de passe oublié ?</div>
+        </div>
+
+        <!-- FORMULAIRE INSCRIPTION -->
+        <div id="panel-register" class="form-panel">
+            <form onsubmit="handleSubmit(event, 'inscription')">
+                <div class="form-group">
+                    <label>Nom de l'exploitant (Pseudo)</label>
+                    <input type="text" required placeholder="Ex: MineurGénéral">
+                </div>
+                <div class="form-group">
+                    <label>Adresse Email</label>
+                    <input type="email" required placeholder="nom@entreprise.com">
+                </div>
+                <div class="form-group">
+                    <label>Mot de passe</label>
+                    <input type="password" required placeholder="Minimum 6 caractères">
+                </div>
+                <button type="submit" class="btn-submit">Créer l'Empire</button>
+            </form>
+        </div>
+
+        <!-- FORMULAIRE MOT DE PASSE OUBLIÉ -->
+        <div id="panel-forgot" class="form-panel">
+            <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">
+                Saisissez votre adresse email pour recevoir un lien de réinitialisation de votre compte d'exploitation.
+            </div>
+            <form onsubmit="handleSubmit(event, 'recuperation')">
+                <div class="form-group">
+                    <label>Adresse Email</label>
+                    <input type="email" required placeholder="nom@entreprise.com">
+                </div>
+                <button type="submit" class="btn-submit">Envoyer le lien</button>
+            </form>
+            <div class="link-forgot" onclick="switchTab('login')">Retour à la connexion</div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function switchTab(tabName) {
+        document.querySelectorAll('.form-panel').forEach(panel => panel.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(`panel-${tabName}`).classList.add('active');
+
+        if(tabName === 'login' || tabName === 'register') {
+            const index = tabName === 'login' ? 0 : 1;
+            document.querySelectorAll('.tab-btn')[index].classList.add('active');
+        }
+    }
+
+    function handleSubmit(event, action) {
+        event.preventDefault();
+        alert(`Action demandée : ${action}. Prêt pour la liaison avec la BDD Supabase !`);
+    }
+</script>
+
+</body>
+</html>
