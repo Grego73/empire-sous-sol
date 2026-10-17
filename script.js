@@ -1,32 +1,36 @@
 /**
- * L'Empire du Sous-Sol - Logique d'authentification et de navigation
+ * L'Empire du Sous-Sol - Logique d'authentification connectée à Supabase
  */
 
-// Attendre que le document HTML soit complètement chargé avant d'exécuter le script
+// 1. Initialisation du client Supabase
+// Remplacer ces chaînes par vos identifiants uniques disponibles sur votre dashboard Supabase
+const SUPABASE_URL = "VOTRE_URL_SUPABASE"; 
+const SUPABASE_ANON_KEY = "VOTRE_CLE_ANON_PUBLIQUE";
+
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("[SYSTEM] Logique de L'Empire du Sous-Sol initialisée.");
+    console.log("[SYSTEM] Logique de L'Empire du Sous-Sol connectée à Supabase.");
+    
+    // Optionnel : Vérifier si un utilisateur est déjà connecté à l'ouverture de la page
+    checkCurrentUser();
 });
 
 /**
  * Gère le basculement entre les différents onglets de formulaires
- * @param {string} tabName - Le nom du panneau à afficher ('login', 'register', 'forgot')
  */
 function switchTab(tabName) {
-    // 1. Cacher tous les panneaux de formulaires
     const panels = document.querySelectorAll('.form-panel');
     panels.forEach(panel => panel.classList.remove('active'));
 
-    // 2. Désactiver le style visuel de tous les boutons d'onglets
     const buttons = document.querySelectorAll('.tab-btn');
     buttons.forEach(btn => btn.classList.remove('active'));
 
-    // 3. Afficher le panneau ciblé
     const targetPanel = document.getElementById(`panel-${tabName}`);
     if (targetPanel) {
         targetPanel.classList.add('active');
     }
 
-    // 4. Mettre à jour l'état actif sur l'onglet correspondant (si applicable)
     if (tabName === 'login' || tabName === 'register') {
         const index = tabName === 'login' ? 0 : 1;
         if (buttons[index]) {
@@ -36,27 +40,104 @@ function switchTab(tabName) {
 }
 
 /**
- * Intercepte la soumission des formulaires pour traitement futur avec Supabase
- * @param {Event} event - L'événement de soumission natif du formulaire
- * @param {string} action - L'action demandée ('connexion', 'inscription', 'recuperation')
+ * Intercepte la soumission des formulaires et appelle l'API d'authentification Supabase
  */
-function handleSubmit(event, action) {
-    event.preventDefault(); // Empêche la page de se recharger
+async function handleSubmit(event, action) {
+    event.preventDefault(); // Empêche le rechargement automatique de la page
     
-    // Exemple de récupération des données selon l'action (Utile pour la future liaison API)
     const form = event.target;
     const emailInput = form.querySelector('input[type="email"]');
     const passwordInput = form.querySelector('input[type="password"]');
     const usernameInput = form.querySelector('input[type="text"]');
 
-    const data = {
-        email: emailInput ? emailInput.value : null,
-        password: passwordInput ? passwordInput.value : null,
-        username: usernameInput ? usernameInput.value : null
-    };
+    const email = emailInput ? emailInput.value : null;
+    const password = passwordInput ? passwordInput.value : null;
+    const username = usernameInput ? usernameInput.value : null;
 
-    console.log(`[AUTH] Tentative de ${action} détectée :`, data.email);
+    try {
+        if (action === 'inscription') {
+            console.log("[AUTH] Tentative de création de compte pour :", email);
+            
+            // Étape A : Création de l'utilisateur dans l'authentification Supabase
+            const { data, error } = await supabase.auth.signUp({
+                email: email,
+                password: password,
+                options: {
+                    // Sauvegarde du pseudo dans les métadonnées de l'utilisateur
+                    data: { display_name: username } 
+                }
+            });
 
-    // Message temporaire avant l'intégration du SDK Supabase
-    alert(`Action d'administration validée : ${action.toUpperCase()}.\nLa structure des données est prête pour la connexion à Supabase !`);
+            if (error) throw error;
+
+            // Étape B : Si la BDD demande une confirmation par email (paramètre par défaut de Supabase)
+            if (data.user && data.session === null) {
+                alert("Compte créé avec succès ! Veuillez vérifier votre boîte de réception pour confirmer votre email avant de vous connecter.");
+                switchTab('login');
+                return;
+            }
+
+            // Étape C : Création automatique de son profil d'exploitant minier
+            if (data.user) {
+                await createPlayerProfile(data.user.id, username);
+                alert("Bienvenue Commandant ! Votre empire minier est initialisé.");
+                window.location.href = "jeu.html"; // Redirection vers l'interface de jeu
+            }
+
+        } else if (action === 'connexion') {
+            console.log("[AUTH] Tentative de connexion pour :", email);
+            
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: email,
+                password: password
+            });
+
+            if (error) throw error;
+
+            console.log("[AUTH] Connexion réussie ! Utilisateur unique ID :", data.user.id);
+            window.location.href = "jeu.html"; // Redirection vers l'interface de jeu
+
+        } else if (action === 'recuperation') {
+            console.log("[AUTH] Demande de réinitialisation pour :", email);
+            
+            const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                redirectTo: window.location.origin + '/reinitialisation.html',
+            });
+
+            if (error) throw error;
+            alert("Un lien de récupération sécurisé vient de vous être envoyé par email.");
+            switchTab('login');
+        }
+
+    } catch (err) {
+        console.error("[AUTH ERROR] Erreur d'authentification :", err.message);
+        alert(`Échec de l'opération : ${err.message}`);
+    }
+}
+
+/**
+ * Fonction utilitaire pour initialiser le profil du joueur dans la table 'profiles' après inscription
+ */
+async function createPlayerProfile(userId, username) {
+    const { error } = await supabase
+        .from('profiles')
+        .insert([
+            { id: userId, username: username, money: 5000 } // Donne les 5000\$ de départ
+        ]);
+        
+    if (error) {
+        console.error("[DATABASE ERROR] Impossible de créer le profil joueur :", error.message);
+    }
+}
+
+/**
+ * Vérifie si une session utilisateur active existe déjà
+ */
+async function checkCurrentUser() {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+        console.log("[AUTH] Session existante détectée pour :", user.email);
+        // Optionnel : décommentez la ligne du dessous pour rediriger automatiquement un joueur déjà connecté
+        // window.location.href = "jeu.html";
+    }
 }
