@@ -4,7 +4,7 @@
 
 // 1. Initialisation du client Supabase
 // Remplacer ces chaînes par vos identifiants uniques disponibles sur votre dashboard Supabase
-const SUPABASE_URL = "https://bxgczdbsgqxykxycmwsn.supabase.co/rest/v1/"; 
+const SUPABASE_URL = "https://bxgczdbsgqxykxycmwsn.supabase.co"; 
 const SUPABASE_ANON_KEY = "sb_publishable_MVfDOGWaMmpSVT7_POsSEw_Q9qmeDCR";
 
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
