@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L'Empire du Sous-Sol - Manuel de Gestion</title>
+    <link rel="stylesheet" href="rules.css">
+</head>
+<body>
+
+<div class="rules-container">
+    <header>
+        <h1>Manuel d'Exploitation : <span>L'Empire du Sous-Sol</span></h1>
+        <p>Bienvenue dans la documentation officielle de l'administration minière. Ce guide rassemble les directives économiques et les bases mécaniques indispensables pour piloter vos filons avec succès.</p>
+    </header>
+
+    <!-- SECTION 1 : LA BOUCLE DE BASE -->
+    <section>
+        <h2>1. Objectif général & Cycle Économique</h2>
+        <p>Vous commencez votre carrière avec un capital initial de <strong>5 000 $</strong>. Votre but est de développer vos concessions et vos infrastructures pour maximiser votre rendement horaire et honorer des contrats commerciaux de plus en plus massifs.</p>
+        <ul>
+            <li><strong>Prospecter :</strong> Découvrir de nouveaux gisements de ressources (Gravier, Charbon, Fer, Or).</li>
+            <li><strong>Extraire :</strong> Gérer vos machines pour automatiser l'extraction en continu.</li>
+            <li><strong>Réinvestir :</strong> Allouer vos profits pour moderniser vos sites ou acquérir du matériel plus performant.</li>
+        </ul>
+    </section>
+
+    <!-- SECTION 2 : COMPARAISON DES CONTRATS D'ACQUISITION -->
+    <section>
+        <h2>2. Gestion Foncière : Neuf, Occasion ou Location ?</h2>
+        <p>Chaque investissement matériel ou foncier implique un arbitrage stratégique. Le tableau ci-dessous résume les trois statuts disponibles sur la place de marché :</p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Statut de l'actif</th>
+                    <th>Coût initial</th>
+                    <th>Efficacité de production</th>
+                    <th>Règles de rétention</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Propriété (Neuf)</strong></td>
+                    <td>Très Élevé</td>
+                    <td><span style="color: var(--success-color);">100 %</span></td>
+                    <td>Acquis indéfiniment jusqu'à l'épuisement total du filon.</td>
+                </tr>
+                <tr>
+                    <td><strong>Marché de l'Occasion</strong></td>
+                    <td>Modéré à Faible</td>
+                    <td><span style="color: #f1c40f;">60 % à 85 %</span></td>
+                    <td>Acquis indéfiniment, mais le gisement est souvent déjà partiellement vidé.</td>
+                </tr>
+                <tr>
+                    <td><strong>Bail Locatif (Location)</strong></td>
+                    <td>Très Faible (Paiement périodique)</td>
+                    <td><span style="color: var(--success-color);">100 %</span></td>
+                    <td>L'actif est automatiquement confisqué à la fin du compte à rebours du bail.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="alert-box">
+            <p><strong>⚠️ RÈGLE CRITIQUE DE SÉCURITÉ :</strong> Si votre trésorerie devient négative à cause du coût récurrent d'une location, vos opérations subissent un gel administratif (arrêt de la production passive) jusqu'au remboursement de vos dettes.</p>
+        </div>
+    </section>
+
+    <!-- SECTION 3 : PRODUCTION PASSIVE ET CALCULS HORS-LIGNE -->
+    <section>
+        <h2>3. Production en Temps Réel et Hors-Ligne</h2>
+        <p>L'Empire du Sous-Sol utilise un système de <strong>calcul de delta-temporel (Delta-Time)</strong> géré par le serveur distant Supabase :</p>
+        <ul>
+            <li>Vos concessions extraient du minerai <strong>chaque seconde</strong>, que vous soyez connecté à l'interface ou non.</li>
+            <li>À votre reconnexion, le système calcule le temps d'absence exact écoulé depuis votre dernière sauvegarde et crédite instantanément votre compte.</li>
+        </ul>
+    </section>
+
+    <!-- BOUTON DE RETOUR -->
+    <footer>
+        <a href="index.html" class="btn-nav">↩️ Retour à l'accueil / Connexion</a>
+    </footer>
+</div>
+
+</body>
+</html>
