@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>L'Empire du Sous-Sol - Jeu de Gestion Minière</title>
-    <!-- Appel du fichier CSS externe -->
+    <!-- Appel du style CSS externe -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -84,23 +84,7 @@
     </div>
 </div>
 
-<script>
-    function switchTab(tabName) {
-        document.querySelectorAll('.form-panel').forEach(panel => panel.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        document.getElementById(`panel-${tabName}`).classList.add('active');
-
-        if(tabName === 'login' || tabName === 'register') {
-            const index = tabName === 'login' ? 0 : 1;
-            document.querySelectorAll('.tab-btn')[index].classList.add('active');
-        }
-    }
-
-    function handleSubmit(event, action) {
-        event.preventDefault();
-        alert(`Action demandée : ${action}. Prêt pour la liaison avec la BDD Supabase !`);
-    }
-</script>
-
+<!-- Liaison avec votre logique JavaScript externe -->
+<script src="script.js"></script>
 </body>
 </html>
