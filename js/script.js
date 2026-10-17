@@ -9,19 +9,19 @@ let supabase = null;
 const SUPABASE_URL = "https://bxgczdbsgqxykxycmwsn.supabase.co"; 
 const SUPABASE_ANON_KEY = "sb_publishable_MVfDOGWaMmpSVT7_POsSEw_Q9qmeDCR";
 
-// 2. On attend que TOUT le HTML et les scripts (CDN Supabase) soient prêts
-document.addEventListener("DOMContentLoaded", () => {
-    console.log("[SYSTEM] Fenêtre prête. Initialisation des modules...");
+// 2. Initialisation au chargement de la page
+document.addEventListener("DOMContentLoaded", async () => {
+    console.log("[SYSTEM] Initialisation des modules...");
 
     try {
-        // 3. On initialise Supabase SEULEMENT maintenant que la bibliothèque est chargée
         if (window.supabase) {
+            // Initialisation de l'instance
             supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             console.log("[SYSTEM] Connexion établie avec le serveur Supabase.");
             
-            // 4. On lance les vérifications de session
+            // Une fois initialisé, on gère l'affichage et la session
             switchTab('login');
-            checkCurrentUser();
+            await checkCurrentUser();
         } else {
             console.error("[CRITICAL] La bibliothèque Supabase n'a pas pu être récupérée du CDN.");
         }
@@ -54,11 +54,40 @@ function switchTab(tabName) {
 }
 
 /**
+ * Vérifie si une session utilisateur active existe déjà
+ */
+async function checkCurrentUser() {
+    // SÉCURITÉ : Si supabase n'est pas encore prêt, on attend un instant
+    if (!supabase) {
+        console.warn("[AUTH] Supabase n'est pas encore prêt pour checkCurrentUser. Re-tentative...");
+        return;
+    }
+
+    try {
+        const { data: { user }, error } = await supabase.auth.getUser();
+        if (error) throw error;
+
+        if (user) {
+            console.log("[AUTH] Session existante détectée pour :", user.email);
+            window.location.href = "jeu.html"; // Redirection automatique si déjà connecté
+        }
+    } catch (err) {
+        console.error("[AUTH] Erreur lors de la vérification de session :", err.message);
+    }
+}
+
+/**
  * Intercepte la soumission des formulaires et appelle l'API d'authentification Supabase
  */
 async function handleSubmit(event, action) {
     event.preventDefault(); // Empêche le rechargement automatique de la page
     
+    // SÉCURITÉ : Si le joueur clique trop vite avant l'initialisation
+    if (!supabase) {
+        alert("Le serveur de jeu est en cours de démarrage. Veuillez patienter une seconde.");
+        return;
+    }
+
     const form = event.target;
     const emailInput = form.querySelector('input[type="email"]');
     const passwordInput = form.querySelector('input[type="password"]');
@@ -72,30 +101,19 @@ async function handleSubmit(event, action) {
         if (action === 'inscription') {
             console.log("[AUTH] Tentative de création de compte pour :", email);
             
-            // Étape A : Création de l'utilisateur dans l'authentification Supabase
             const { data, error } = await supabase.auth.signUp({
                 email: email,
                 password: password,
                 options: {
-                    // Sauvegarde du pseudo dans les métadonnées de l'utilisateur
                     data: { display_name: username } 
                 }
             });
 
             if (error) throw error;
 
-            // Étape B : Si la BDD demande une confirmation par email (paramètre par défaut de Supabase)
-            if (data.user && data.session === null) {
-                alert("Compte créé avec succès ! Veuillez vérifier votre boîte de réception pour confirmer votre email avant de vous connecter.");
-                switchTab('login');
-                return;
-            }
-
-            // Étape C : Création automatique de son profil d'exploitant minier
             if (data.user) {
-                await createPlayerProfile(data.user.id, username);
-                alert("Bienvenue Commandant ! Votre empire minier est initialisé.");
-                window.location.href = "jeu.html"; // Redirection vers l'interface de jeu
+                alert("Compte créé avec succès ! Bienvenue dans l'Empire.");
+                window.location.href = "jeu.html"; 
             }
 
         } else if (action === 'connexion') {
@@ -108,50 +126,20 @@ async function handleSubmit(event, action) {
 
             if (error) throw error;
 
-            console.log("[AUTH] Connexion réussie ! Utilisateur unique ID :", data.user.id);
-            window.location.href = "jeu.html"; // Redirection vers l'interface de jeu
+            console.log("[AUTH] Connexion réussie !");
+            window.location.href = "jeu.html";
 
         } else if (action === 'recuperation') {
             console.log("[AUTH] Demande de réinitialisation pour :", email);
             
-            const { error } = await supabase.auth.resetPasswordForEmail(email, {
-                redirectTo: window.location.origin + '/reinitialisation.html',
-            });
-
+            const { error } = await supabase.auth.resetPasswordForEmail(email);
             if (error) throw error;
-            alert("Un lien de récupération sécurisé vient de vous être envoyé par email.");
+            alert("Un lien de récupération vient de vous être envoyé par email.");
             switchTab('login');
         }
 
     } catch (err) {
-        console.error("[AUTH ERROR] Erreur d'authentification :", err.message);
+        console.error("[AUTH ERROR] Échec :", err.message);
         alert(`Échec de l'opération : ${err.message}`);
-    }
-}
-
-/**
- * Fonction utilitaire pour initialiser le profil du joueur dans la table 'profiles' après inscription
- */
-async function createPlayerProfile(userId, username) {
-    const { error } = await supabase
-        .from('profiles')
-        .insert([
-            { id: userId, username: username, money: 5000 } // Donne les 5000\$ de départ
-        ]);
-        
-    if (error) {
-        console.error("[DATABASE ERROR] Impossible de créer le profil joueur :", error.message);
-    }
-}
-
-/**
- * Vérifie si une session utilisateur active existe déjà
- */
-async function checkCurrentUser() {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) {
-        console.log("[AUTH] Session existante détectée pour :", user.email);
-        // Optionnel : décommentez la ligne du dessous pour rediriger automatiquement un joueur déjà connecté
-        // window.location.href = "jeu.html";
     }
 }
