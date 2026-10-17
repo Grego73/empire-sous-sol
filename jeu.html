@@ -3,31 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>L'Empire du Sous-Sol - Tableau de Bord</title>
-    
-    <!-- ÉTAPE A : Chargement obligatoire des modules de sécurité en premier -->
+    <title>L'Empire du Sous-Sol - Terminal de Gestion</title>
+    <!-- Chargement obligatoire de la sécurité et de Supabase avant l'affichage -->
     <script src="https://jsdelivr.net"></script>
     <script src="security.js"></script>
-
-    <!-- Vos fichiers de styles pour le jeu -->
-    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div style="padding: 20px; max-width: 800px; margin: auto;">
-        <header style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 10px;">
-            <h2>Console de Gestion Minière</h2>
-            <!-- ÉTAPE B : Bouton doté de l'ID "btnLogout" pour déclencher la sécurité -->
-            <button id="btnLogout" style="background: #951515; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">
-                ❌ Quitter la session
-            </button>
-        </header>
+<div class="landing-container" style="max-width: 1100px; grid-template-columns: 1fr;">
+    
+    <!-- EN-TÊTE DE LA CONSOLE -->
+    <header style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 20px;">
+        <div>
+            <h1 style="font-size: 24px; margin: 0;">L'Empire <span>du Sous-Sol</span></h1>
+            <div style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">👤 Exploitant : <span id="playerUsername" style="color: var(--text-main);">Chargement...</span></div>
+        </div>
+        <button id="btnLogout" class="btn-submit" style="background-color: #951515; width: auto; margin: 0; padding: 8px 16px;">❌ Déconnexion</button>
+    </header>
 
-        <main style="margin-top: 20px;">
-            <p>Félicitations, cette zone est sécurisée. Vos données financières et l'état de vos filons sont protégés par chiffrement.</p>
-            <!-- Le reste de vos tableaux de gestion et listes de carrières se place ici -->
-        </main>
+    <!-- COMPTEURS ÉCONOMIQUES EN DIRECT -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+        <div style="background: #090a0e; padding: 15px; border: 1px solid var(--border-color); border-radius: 6px;">
+            <div style="font-size: 11px; text-transform: uppercase; color: var(--text-muted);">Trésorerie Actuelle</div>
+            <div id="playerMoney" style="font-size: 24px; font-weight: bold; color: var(--success-color); margin-top: 5px;">0 $</div>
+        </div>
+        <div style="background: #090a0e; padding: 15px; border: 1px solid var(--border-color); border-radius: 6px;">
+            <div style="font-size: 11px; text-transform: uppercase; color: var(--text-muted);">Rendement Global</div>
+            <div id="playerIncome" style="font-size: 24px; font-weight: bold; color: var(--accent-color); margin-top: 5px;">+0 $/s</div>
+        </div>
     </div>
+
+    <!-- ZONE PRINCIPALE : LISTE DES MINES ET BOUTIQUE -->
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+        
+        <!-- TABLEAU DES CONCESSIONS -->
+        <div>
+            <h3 style="margin-top: 0; color: var(--text-muted); font-size: 14px; text-transform: uppercase;">📊 Vos Concessions Minières actifs</h3>
+            <div style="background: #090a0e; border: 1px solid var(--border-color); border-radius: 6px; padding: 10px;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;" id="minesTable">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border-color); font-size: 12px; color: var(--text-muted);">
+                            <th style="padding: 10px;">Gisement</th>
+                            <th>Rendement</th>
+                            <th>Ressources Restantes</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Les lignes de mines extraites de Supabase s'injecteront ici en JavaScript -->
+                        <tr>
+                            <td colspan="4" style="padding: 20px; text-align: center; color: var(--text-muted);">Analyse des filons en cours...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- RECAPITULATIF DE GESTION -->
+        <div style="background: #090a0e; border: 1px solid var(--border-color); border-radius: 6px; padding: 20px; height: fit-content;">
+            <h3 style="margin-top: 0; color: var(--text-muted); font-size: 14px; text-transform: uppercase;">📈 Rapport d'exploitation</h3>
+            <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">Bienvenue dans votre centre de commandement. D'ici, vous pilotez vos baux de location et surveillez l'usure de vos machines d'occasion.</p>
+        </div>
+
+    </div>
+
+</div>
 
 </body>
 </html>
