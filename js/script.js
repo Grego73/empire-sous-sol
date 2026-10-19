@@ -97,10 +97,11 @@ async function handleSubmit(event, action) {
 
             if (error) throw error;
 
-            if (data.user) {
-                alert("Compte créé avec succès ! Bienvenue dans l'Empire.");
-                window.location.href = "jeu.html"; 
-            }
+        if (data.user) {
+            // Le message idéal pour guider votre joueur
+            alert("✉️ Ordre d'inscription envoyé ! Un e-mail de confirmation vient de vous être expédié via Resend. Cliquez sur le lien à l'intérieur pour activer votre compte d'exploitant.");
+            switchTab('login'); // On le redirige vers l'onglet de connexion en attendant
+        }
 
         } else if (action === 'connexion') {
             console.log("[AUTH] Tentative de connexion pour :", email);
